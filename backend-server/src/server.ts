@@ -32,7 +32,6 @@ app.get('/', (request: Request, response: Response ) => {
 app.post('/addPhoneNumber', (request:Request, response: Response) => {
     let {id, phoneNumber} = request.body;
     phoneBook.set(id,phoneNumber);
-    console.log(phoneBook);
     response.sendStatus(200);
 });
 
@@ -41,14 +40,15 @@ app.get('/phoneNumber/:id', (request:Request, response: Response) => {
     response.status(200).send(phoneBook.get(id));
 });
 
-app.get('/sendMessage', async(request: Request, response: Response) => {
+app.get('/sendMessage/:id', async(request: Request, response: Response) => {
+    const id = request.params.id;
+    
     const message = await client.messages.create({
-        body: 'Hello from Node',
-        to: '+15148859244',  // Text this number
+        body: 'DANGER!! RUN FOR YOU LIFE!!',
+        to: phoneBook.get(id),  // Text this number
         from: '+16672398875' // From a valid Twilio number
     });
     response.sendStatus(200);
-})
-
+});
 
 app.listen(port, ()=> console.log("Server running on port "));
