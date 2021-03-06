@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, Button } from "react-native";
+import MapView from 'react-native-maps';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 interface Props {
   navigation: any;
@@ -7,15 +8,24 @@ interface Props {
 class Heatmap extends Component<Props> {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>HeatMap</Text>
-        <Button
-          title="Go to Newsfeed"
-          onPress={() => this.props.navigation.navigate("Newsfeed")}
-        />
+      <View style={styles.container}>
+        <MapView style={styles.map} />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  map: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+});
 
 export default Heatmap;
