@@ -2,6 +2,17 @@ import express,  { Application, Request, Response, NextFunction, request, respon
 import cors from "cors";
 import bodyParser from "body-parser";
 import helmet from "helmet";
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+import Twilio from 'twilio';
+// Twilio:
+
+var accountSid = process.env.accountSid; // Your Account SID from www.twilio.com/console
+var authToken = process.env.authToken;   // Your Auth Token from www.twilio.com/console
+
+const client = Twilio(accountSid, authToken);
 
 const app: Application = express();
 const port = 5000;
@@ -29,5 +40,15 @@ app.get('/phoneNumber/:id', (request:Request, response: Response) => {
     const id = request.params.id;
     response.status(200).send(phoneBook.get(id));
 });
+
+app.get('/sendMessage', async(request: Request, response: Response) => {
+    const message = await client.messages.create({
+        body: 'Hello from Node',
+        to: '+15148859244',  // Text this number
+        from: '+16672398875' // From a valid Twilio number
+    });
+    response.sendStatus(200);
+})
+
 
 app.listen(port, ()=> console.log("Server running on port "));
