@@ -1,82 +1,90 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import MapView, {Marker} from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
+import {LocationObject, LocationOptions} from "expo-location";
 
 interface Props {
-  navigation: any;
+	navigation: any;
 }
+
+
 class Heatmap extends Component<Props> {
-  state = {
-    location: {},
-    errorMessage: ''
-  };
+	state = {
+		location: {coords: {latitude: 0, longitude: 0}},
+		region: undefined,
+		errorMessage: '',
+		showMap: false,
+	};
 
-  UNSAFE_componentWillMount() {
-    this._getLocation();
-  }
+	async componentDidMount() {
+		console.log("component will mount")
+		await this._getLocation();
+	}
 
-  _getLocation = async() => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+	_getLocation = async () => {
+		const {status} = await Permissions.askAsync(Permissions.LOCATION);
 
-    if (status !== 'granted'){
-      console.log("Permission Not Granted");
-    }
+		if (status !== 'granted') {
+			console.log("Permission Not Granted");
+		}
 
-    this.setState({
-      errorMessage: 'Permission Not Granted'
-    })
+		this.setState({
+			errorMessage: 'Permission Not Granted'
+		})
 
-    const location = await Location.getCurrentPositionAsync();
+		Location.watchPositionAsync({}, this.onLocationChanged);
+	}
 
-    this.setState({
-      location
-    })
-    console.log(this.state.location);
-  }
+	onLocationChanged = (location: LocationObject) => {
+		let region = {
+			latitude: location.coords.latitude,
+			longitude: location.coords.longitude,
+			latitudeDelta: 0.1,
+			longitudeDelta: 0.05,
+		}
 
+		this.setState({
+			location: location,
+			region: region,
+			showMap: true
+		})
+	}
 
+	showMap(show: any) {
+		if (show) {
+			return <MapView
+				style={styles.map}
+				showsUserLocation={true}
+				initialRegion={this.state.region}>
+			</MapView>
+		}
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <MapView 
-          style={styles.map}
-          initialRegion={{
-            latitude: this.state.location.coords.latitude,
-            longitude: -73.6763872,
-            latitudeDelta: 0.04,
-            longitudeDelta: 0.05,
-          }}>
-            <Marker
-              coordinate={{
-                latitude: 45.5372949,
-                longitude: -73.6763872
-              }}
-              style={{width: 26, height: 28}}
-              image ={require('../assets/current-location.png')}
-              title ="You are here"
-            ></Marker>
+		return <View></View>
+	}
 
-          </MapView>
-      </View>
-    );
-  }
+	render() {
+		return (
+			<View style={styles.container}>
+				{this.showMap(this.state.showMap)}
+			</View>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20
-  },
-  map: {
-    width: "95%",
-    height: "100%",
-  },
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 20
+	},
+	map: {
+		width: "95%",
+		height: "100%",
+	},
 });
 
 export default Heatmap;
