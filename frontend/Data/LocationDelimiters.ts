@@ -125,10 +125,6 @@ export const polygons =
                                 longitude: -73.4402229734375
                         },
                         {
-                                latitude: 45.34932169497595,
-                                longitude: -73.84397053203125
-                        },
-                        {
                                 latitude: 45.424551383459566,
                                 longitude: -73.8796760984375
                         },

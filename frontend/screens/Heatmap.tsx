@@ -92,7 +92,7 @@ class Heatmap extends Component<Props> {
 			await generateUUID();
 			id = await SecureStore.getItemAsync('uuid');
 		}
-			await axios.post(`http://192.168.0.38:5000/updateLocation/${id}`,
+			await axios.post(`http://192.168.2.248:5000/updateLocation/${id}`,
 				{
 					location: location
 				}

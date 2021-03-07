@@ -11,6 +11,7 @@ import {generateUUID} from "../utilities/unique-id";
 import * as SecureStore from 'expo-secure-store';
 import { PROVIDER_GOOGLE } from "react-native-maps";
 
+
 interface Props {
   navigation: any;
 }
@@ -28,9 +29,11 @@ export default class ZoneMap extends Component<Props> {
 	};
 
   async componentDidMount() {
+    await this._getLocation();
 		let areaTableResponse = await axios.get(`http://192.168.2.248:5000/locations`);
     const ActiveCaseNumbers = areaTableResponse.data;
     this.setState({activeCases: ActiveCaseNumbers})
+    this.goThroughPolygons()
 	}
 
   _getLocation = async () => {
@@ -86,7 +89,7 @@ export default class ZoneMap extends Component<Props> {
 			await generateUUID();
 			id = await SecureStore.getItemAsync('uuid');
 		}
-			await axios.post(`http://192.168.0.38:5000/updateLocation/${id}`,
+			await axios.post(`http://192.168.2.248:5000/updateLocation/${id}`,
 				{
 					location: location
 				}
@@ -100,14 +103,13 @@ export default class ZoneMap extends Component<Props> {
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
+          showsUserLocation={true}
         >
           {this.drawPolygons()}
         </MapView>
       </View>
     )
   }
-  
-  
   
   private drawPolygons(){
     return polygons.map((polygon, index) => (
@@ -120,25 +122,33 @@ export default class ZoneMap extends Component<Props> {
         ))
   }
 
-  private goThroughPolygons(){
+  private goThroughPolygons() {
+    console.log(this.state.location.coords)
     polygons.forEach(polygon => {
-      if(this.inside(this.state.location, polygon)){
-        console.log(" I AM GONNA DIE!!")
+      const location = {
+        coords: {
+          latitude: 45.537493,
+          longitude: -73.677387
+        }
+      }
+      
+      if (this.inside(this.state.location.coords, polygon.coordinates)){
+        // call something here:
       }
     })
-  }
+    }
 
   public inside(point: any, polygon: any) {
     // ray-casting algorithm based on
     // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
     
     var x = point.latitude, y = point.longitude;
-    
+    console.log(x);
+    console.log(y);
     var inside = false;
     for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
         var xi = polygon[i].latitude, yi = polygon[i].longitude;
         var xj = polygon[j].latitude, yj = polygon[j].longitude;
-        
         var intersect = ((yi > y) != (yj > y))
             && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
         if (intersect) inside = !inside;
