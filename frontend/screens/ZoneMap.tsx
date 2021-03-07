@@ -1,57 +1,65 @@
 import React, { Component } from "react";
-import MapView, { Polygon } from 'react-native-maps';
+import MapView, { Heatmap, Polygon } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { locations } from "../Data/data";
 
 interface Props {
   navigation: any;
 }
-
-export default class Zone extends Component<Props> {
-  //Defining our zones
-  polygons = [
-    [
-      { latitude: 25.774, longitude: -80.19 },
-      { latitude: 18.466, longitude: -66.118 },
-      { latitude: 32.321, longitude: -64.757 },
-      { latitude: 25.774, longitude: -80.19 }
-    ],
-    [
-      { latitude: -25.774, longitude: 80.19 },
-      { latitude: -18.466, longitude: 66.118 },
-      { latitude: -32.321, longitude: 64.757 },
-      { latitude: -25.774, longitude: 80.19 }
-    ],
-  ]
+const { width, height } = Dimensions.get('window');
 
 
-  //Class methods
+
+export default class ZoneMap extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <MapView style={styles.map} />
-        <Polygon
-        coordinates = {[
-          { latitude: 25, longitude: 25 },
-          { latitude: 25, longitude: -25 },
-          { latitude: -25, longitude: 25 },
-          { latitude: 25, longitude: 25 }
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: 24.83073230,
+            longitude: 67.10113298,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          {
+            locations.map(marker => (
+              <Polygon fillColor = {'#0067B3'} coordinates = {locations}/>
 
-        ]}
-        fillColor="#FFA500"
-      />
-        {/* {this.drawPolygons()} */}
+              // <Circle center={{latitude: marker.latitude, longitude: marker.longitude}} radius= {550}
+              // fillColor = {'#A3BE80'} />
+            ))
+          }
+
+
+
+          {/* <Heatmap points={locations} /> */}
+
+          {/* {
+        locations.map(marker => (
+          <Marker
+          coordinate = {{latitude: marker.latitude,
+            longitude: marker.longitude}}
+          >
+          <CustomMarker item = {marker}/>
+          </Marker>
+        ))
+      } */}
+
+        </MapView>
       </View>
-    );
+    )
   }
 
-  private drawPolygons(){
-    this.polygons.forEach((polygon) => {
-      <Polygon
-        coordinates = {polygon}
-        fillColor="Orange"
-      />
-    })
-  }
+  // private drawPolygons(){
+  //   this.polygons.forEach((polygon) => {
+  //     <Polygon
+  //       coordinates = {polygon}
+  //       fillColor="Orange"
+  //     />
+  //   })
+  // }
 }
 
 
