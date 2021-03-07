@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#778DFF",
 		shadowColor: "#000000",
 		borderRadius: 3,
-		width: "50%",
+		width: 150,
 
 		shadowOffset: {
 			width: 0,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#E1E1E1",
 		shadowColor: "#000000",
 		borderRadius: 3,
-		width: "50%",
+		width: 150,
 		alignSelf: 'center',
 
 		shadowOffset: {
