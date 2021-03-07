@@ -14,7 +14,6 @@ export default class PermissionPage extends Component<Props> {
 	async onSave(){
 		await generateUUID();
 		let id = await SecureStore.getItemAsync('uuid');
-
 		axios
 			.post("http://192.168.0.38:5000/addPhoneNumber",
 				{
