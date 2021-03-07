@@ -105,7 +105,8 @@ dist
 # TernJS port file
 .tern-port
 
-.expo/
-.idea/
+
+frontend/.expo/
+.idea/*
 .npmignore
 frontend/package-lock.json
