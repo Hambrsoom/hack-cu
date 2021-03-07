@@ -47,7 +47,6 @@ app.get('/', (request: Request, response: Response) => {
 app.post('/addPhoneNumber', (request: Request, response: Response) => {
   let { id, phoneNumber } = request.body;
   phoneBook.set(id, phoneNumber);
-  console.log(phoneBook);
   response.sendStatus(200);
 });
 

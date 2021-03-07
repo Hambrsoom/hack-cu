@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-import MapView, { Heatmap, Polygon } from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { polygons } from "../Data/LocationDelimiters";
-import axios from "axios";
 
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
@@ -11,6 +7,11 @@ import {generateUUID} from "../utilities/unique-id";
 import * as SecureStore from 'expo-secure-store';
 import { PROVIDER_GOOGLE } from "react-native-maps";
 
+import MapView, { Polygon } from 'react-native-maps';
+import { StyleSheet, View } from 'react-native';
+import { polygons } from '../Data/LocationDelimiters';
+import axios from 'axios';
+import CustomHeader from '../components/Header';
 
 interface Props {
   navigation: any;
@@ -99,7 +100,11 @@ export default class ZoneMap extends Component<Props> {
   
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{ height: '100%', width: '100%' }}>
+        <CustomHeader
+          navigation={this.props.navigation}
+          header="Zonemap"
+        ></CustomHeader>
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
@@ -108,18 +113,20 @@ export default class ZoneMap extends Component<Props> {
           {this.drawPolygons()}
         </MapView>
       </View>
-    )
+    );
   }
-  
-  private drawPolygons(){
+
+  private drawPolygons() {
     return polygons.map((polygon, index) => (
-        <View key={index}>
-          <Polygon
-            coordinates={polygon.coordinates}
-            fillColor = {this.colorPicker(polygon.title)}
-          />
-        </View>
-        ))
+      <View key={index}>
+        <Polygon
+          coordinates={polygon.coordinates}
+          strokeColor={'rgba(255,0,0,0.0)'}
+          fillColor={this.colorPicker(polygon.title)}
+          geodesic={true}
+        />
+      </View>
+    ));
   }
 
   private goThroughPolygons() {
@@ -160,18 +167,19 @@ export default class ZoneMap extends Component<Props> {
   private colorPicker(municipalityString: string){
     let result: any;
     //Query for the active case # in the region that matches the passed string
-    result = this.state.activeCases.find((record) => record["category"] == municipalityString)
+    result = this.state.activeCases.find(
+      (record) => record['category'] == municipalityString
+    );
     //Pick a color based on that number
-    if(result?.numberOfActiveCases && result?.numberOfActiveCases > 1000){
-      return "#FF0000"
-    }
-
-    else if(result?.numberOfActiveCases && result?.numberOfActiveCases > 500){
-      return "#FF8C00"
-    }
-
-    else {
-      return "#00FF00"
+    if (result?.numberOfActiveCases && result?.numberOfActiveCases > 1000) {
+      return 'rgba(255,0,0,0.25)';
+    } else if (
+      result?.numberOfActiveCases &&
+      result?.numberOfActiveCases > 500
+    ) {
+      return 'rgba(255,140,0,0.25)';
+    } else {
+      return 'rgba(0,255,0,0.25)';
     }
   }
 }
@@ -182,10 +190,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20
   },
   map: {
-    width: "95%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
 });
