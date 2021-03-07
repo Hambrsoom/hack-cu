@@ -5,10 +5,10 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import {LocationObject} from "expo-location";
 import axios from "axios";
-import {generateUUID} from "../App";
+import {generateUUID} from "../utilities/unique-id";
 import * as SecureStore from 'expo-secure-store';
 import { PROVIDER_GOOGLE } from "react-native-maps";
-import Points from "./heatMapPointsV2.json"
+
 
 interface Props {
 	navigation: any;
@@ -29,7 +29,7 @@ class Heatmap extends Component<Props> {
 		await this._getLocation();
 
 		this.setState({
-			heatMapPoints: this.getHeapMapPoints()
+			heatMapPoints: await this.getHeapMapPoints()
 		})
 	}
 
@@ -47,18 +47,10 @@ class Heatmap extends Component<Props> {
 		await Location.watchPositionAsync({}, this.onLocationChanged);
 	}
 
-	getHeapMapPoints(): WeightedLatLng[] {
-		let point: WeightedLatLng = {latitude: 25.0, longitude: 35.0}
+	async getHeapMapPoints(): Promise<WeightedLatLng[]> {
+		let points:any = await axios.get("http://192.168.2.248:5000/heatPoints");
 
-		fetch("heatMapPointsV2.json").then(r => console.log(r.json()));
-
-		let points: WeightedLatLng[] = Points.points;
-
-		Object.keys(Points.points).map((value, i) => ())
-
-		JSON.parse(Points.points)
-
-		return [point]
+		return points.data;
 	}
 
 	onLocationChanged = async (location: LocationObject) => {

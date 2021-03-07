@@ -1,5 +1,4 @@
-{
-  "points": [
+export const points: any = [
     {
       "latitude": 45.4972915402526,
       "longitude": -73.5787623748183
@@ -316,7 +315,6 @@
       "latitude": 45.4974008195396,
       "longitude": -73.5790165141224
     },
-    "staffelevators-1"
     {
       "latitude": 45.4974222053538,
       "longitude": -73.5790480300784
@@ -577,7 +575,6 @@
       "latitude": 45.4970993021964,
       "longitude": -73.5786815732717
     },
-    "entrance"
     {
       "latitude": 45.4970852015797,
       "longitude": -73.5786185413599
@@ -626,7 +623,6 @@
       "latitude": 45.4972654541979,
       "longitude": -73.5788029432296
     },
-    "staffwashrooms-2"
     {
       "latitude": 45.4972229174521,
       "longitude": -73.5788797214627
@@ -739,7 +735,6 @@
       "latitude": 45.4974019945846,
       "longitude": -73.5790248960256
     },
-    "staffelevators-1"
     {
       "latitude": 45.4974142150505,
       "longitude": -73.5789957270026
@@ -868,7 +863,6 @@
       "latitude": 45.4972405431794,
       "longitude": -73.5787117481231
     },
-    "staffwashrooms-1"
     {
       "latitude": 45.4972750895889,
       "longitude": -73.578682243824
@@ -1125,7 +1119,6 @@
       "latitude": 45.4952147234681,
       "longitude": -73.5785880312323
     },
-    "entrance"
     {
       "latitude": 45.4952064978334,
       "longitude": -73.5786483809351
@@ -1242,7 +1235,6 @@
       "latitude": 45.4972407781891,
       "longitude": -73.5787117481231
     },
-    "staffwashrooms-1"
     {
       "latitude": 45.4973702683625,
       "longitude": -73.5789343714714
@@ -1747,7 +1739,6 @@
       "latitude": 45.45899996,
       "longitude": -73.6379993
     },
-    "staffwashrooms-1"
     {
       "latitude": 45.45901501,
       "longitude": -73.6379832
@@ -1940,12 +1931,10 @@
       "latitude": 45.4971190430539,
       "longitude": -73.5784985125064
     },
-    "shuttle"
     {
       "latitude": 45.4584776424937,
       "longitude": -73.638241700828
     },
-    "shuttle"
     {
       "latitude": 45.4970917818679,
       "longitude": -73.5788528993725
@@ -2010,5 +1999,4 @@
       "latitude": 45.45906580305725,
       "longitude": -73.63864302635193
     }
-  ]
-}
+];

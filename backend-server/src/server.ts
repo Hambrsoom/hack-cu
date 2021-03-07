@@ -10,6 +10,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
+import { points } from "./heatMapPoints";
+
 dotenv.config();
 
 const https = require('https');
@@ -108,6 +110,10 @@ app.get('/newsfeed', async (request: Request, response: Response) => {
     });
   });
   req.end();
+});
+
+app.get('/heatPoints', (request: Request, response: Response) => {
+  response.status(200).send(points);
 });
 
 app.listen(port, () => console.log('Server running on port '));
