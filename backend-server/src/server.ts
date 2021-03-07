@@ -136,8 +136,6 @@ app.get('/locations', async(request:Request, response:Response) => {
     response.status(200).send(listOfAreas);
 })
 
-
-app.listen(port, ()=> console.log("Server running on port "));
 app.get('/heatPoints', (request: Request, response: Response) => {
   response.status(200).send(points);
 });

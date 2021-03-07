@@ -28,10 +28,10 @@ export default class ZoneMap extends Component<Props> {
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 24.83073230,
-            longitude: 67.10113298,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: 45.4973197413792,
+            longitude: -73.5788368061184,
+            latitudeDelta: 1,
+            longitudeDelta: 1,
           }}
         >
           {this.drawPolygons()}
@@ -47,7 +47,9 @@ export default class ZoneMap extends Component<Props> {
         <View key={index}>
           <Polygon
             coordinates={polygon.coordinates}
+            strokeColor = {"rgba(255,0,0,0.0)"}
             fillColor = {this.colorPicker(polygon.title)}
+            geodesic={true}
           />
         </View>
         ))
@@ -59,15 +61,15 @@ export default class ZoneMap extends Component<Props> {
     result = this.state.activeCases.find((record) => record["category"] == municipalityString)
     //Pick a color based on that number
     if(result?.numberOfActiveCases && result?.numberOfActiveCases > 1000){
-      return "#FF0000"
+      return "rgba(255,0,0,0.25)"
     }
 
     else if(result?.numberOfActiveCases && result?.numberOfActiveCases > 500){
-      return "#FF8C00"
+      return "rgba(255,140,0,0.25)"
     }
 
     else {
-      return "#00FF00"
+      return "rgba(0,255,0,0.25)"
     }
   }
 }
