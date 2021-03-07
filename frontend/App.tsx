@@ -5,6 +5,7 @@ import Newsfeed from "./screens/Newsfeed";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import PermissionPage from "./screens/PermissionPage/PermissionPage";
 import {View, StyleSheet} from "react-native";
+import AreasMap from "./screens/AreasMap"
 
 const Drawer = createDrawerNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
 			<Drawer.Navigator initialRouteName="Permission">
 				<Drawer.Screen name="Permission" component={PermissionPage}/>
 				<Drawer.Screen name="Heatmap" component={Heatmap}/>
+				<Drawer.Screen name="Areas-map" component={AreasMap}/>
 				<Drawer.Screen name="Newsfeed" component={Newsfeed}/>
 			</Drawer.Navigator>
 		</NavigationContainer>
