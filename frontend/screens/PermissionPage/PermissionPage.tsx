@@ -15,13 +15,13 @@ export default class PermissionPage extends Component<Props> {
 		await generateUUID();
 		let id = await SecureStore.getItemAsync('uuid');
 		axios
-			.post("http://192.168.2.248:5000/addPhoneNumber",
+			.post("http://localhost:5000/addPhoneNumber",
 				{
 					id: id,
 					phoneNumber: this.state.telephoneNumber
 				}
 			)
-			.then(() => this.props.navigation.navigate("Heatmap"))
+			.then(() => this.props.navigation.navigate("Main"))
 			.catch(reason => console.log("Cannot add number:", reason))
 	}
 
@@ -57,7 +57,7 @@ export default class PermissionPage extends Component<Props> {
 			</TouchableOpacity>
 
 			<TouchableOpacity
-				onPress={() => this.props.navigation.navigate("Heatmap")}>
+				onPress={() => this.props.navigation.navigate("Main")}>
 				<Text style={styles.secondaryButtonText}>Skip</Text>
 			</TouchableOpacity>
 		</View>;
