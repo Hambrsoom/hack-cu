@@ -3,9 +3,7 @@ import React, { Component } from "react";
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import {LocationObject} from "expo-location";
-import {generateUUID} from "../utilities/unique-id";
 import * as SecureStore from 'expo-secure-store';
-import { PROVIDER_GOOGLE } from "react-native-maps";
 
 import MapView, { Polygon } from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
@@ -17,24 +15,21 @@ interface Props {
   navigation: any;
 }
 
-const FIVE_MINUTES_IN_MS = 1000*60*5;
-
-
 export default class ZoneMap extends Component<Props> {
   state = {
-    location: {coords: {latitude: 0, longitude: 0}},
-		activeCases: [],
-    region: undefined,
-		errorMessage: '',
-		showMap: false,
-	};
+	  location: {coords: {latitude: 0, longitude: 0}},
+	  activeCases: [],
+	  region: undefined,
+	  errorMessage: '',
+	  showMap: false,
+	  smsSent: false
+  };
 
   async componentDidMount() {
     await this._getLocation();
-		let areaTableResponse = await axios.get(`http://192.168.2.248:5000/locations`);
+		let areaTableResponse = await axios.get(`http://192.168.0.38:5000/locations`);
     const ActiveCaseNumbers = areaTableResponse.data;
     this.setState({activeCases: ActiveCaseNumbers})
-    this.goThroughPolygons()
 	}
 
   _getLocation = async () => {
@@ -53,49 +48,23 @@ export default class ZoneMap extends Component<Props> {
 
 
   onLocationChanged = async (location: LocationObject) => {
-		let region = {
-			latitude: location.coords.latitude,
-			longitude: location.coords.longitude,
-			latitudeDelta: 0.1,
-			longitudeDelta: 0.05,
-		}
+	  let region = {
+		  latitude: location.coords.latitude,
+		  longitude: location.coords.longitude,
+		  latitudeDelta: 0.1,
+		  longitudeDelta: 0.05,
+	  }
 
-		// Check if location needs to be persisted again
-		let currentTime: Date = new Date();
-		let lastLocationUpdate = await SecureStore.getItemAsync('lastUpdated');
+	  await this.goThroughPolygons(location)
 
-		if (lastLocationUpdate) {
-			let lastPersistedTime = new Date(lastLocationUpdate);
-			let locationNeedsToBePersistedAgain: boolean = (currentTime.getTime() - lastPersistedTime.getTime()) < FIVE_MINUTES_IN_MS;
-			if (locationNeedsToBePersistedAgain) {
-				await this.persistCurrentLocation(location, currentTime)
-			}
-		}else {
-			await this.persistCurrentLocation(location, currentTime)
-		}
+	  this.setState({
+		  location: location,
+		  region: region,
+		  showMap: true
+	  })
 
-		this.setState({
-			location: location,
-      region: region,
-      showMap: true
-		})
-	}
+  }
 
-  async persistCurrentLocation(location: LocationObject, currentTime: Date) {
-		let id = await SecureStore.getItemAsync('uuid');
-
-		await SecureStore.setItemAsync('lastUpdated', currentTime.toUTCString());
-
-		if(!id){
-			await generateUUID();
-			id = await SecureStore.getItemAsync('uuid');
-		}
-			await axios.post(`http://192.168.2.248:5000/updateLocation/${id}`,
-				{
-					location: location
-				}
-			)
-		}
 
   
   render() {
@@ -104,7 +73,7 @@ export default class ZoneMap extends Component<Props> {
         <CustomHeader
           navigation={this.props.navigation}
           header="Zonemap"
-        ></CustomHeader>
+        />
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
@@ -129,36 +98,41 @@ export default class ZoneMap extends Component<Props> {
     ));
   }
 
-  private goThroughPolygons() {
-    console.log(this.state.location.coords)
-    polygons.forEach(polygon => {
-      const location = {
-        coords: {
-          latitude: 45.537493,
-          longitude: -73.677387
-        }
-      }
-      
-      if (this.inside(this.state.location.coords, polygon.coordinates)){
-        // call something here:
-      }
-    })
-    }
+  goThroughPolygons= async (location: LocationObject) => {
+	  console.log("Go through polygones ", location)
+
+	  for(let  polygon of polygons){
+		  let currentLoc = {
+			  latitude: location.coords.latitude,
+			  longitude: location.coords.longitude
+		  }
+
+		  if (this.inside(currentLoc, polygon.coordinates)) {
+			  let uuid = await SecureStore.getItemAsync('uuid');
+
+			  if(uuid && !this.state.smsSent){
+			  	console.log("send message")
+				  await axios.get(`http://192.168.0.38:5000/sendMessage/${uuid}`);
+				  this.setState({smsSent: true})
+			  }
+		  }
+	  }
+  }
 
   public inside(point: any, polygon: any) {
     // ray-casting algorithm based on
     // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
-    
-    var x = point.latitude, y = point.longitude;
+
+    let x = point.latitude, y = point.longitude;
     console.log(x);
     console.log(y);
-    var inside = false;
-    for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-        var xi = polygon[i].latitude, yi = polygon[i].longitude;
-        var xj = polygon[j].latitude, yj = polygon[j].longitude;
-        var intersect = ((yi > y) != (yj > y))
+	  let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+		let xi = polygon[i].latitude, yi = polygon[i].longitude;
+		let xj = polygon[j].latitude, yj = polygon[j].longitude;
+		let intersect = ((yi > y) != (yj > y))
             && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
+        if (intersect) inside = true;
     }
     
     return inside;
