@@ -130,7 +130,6 @@ export default class ZoneMap extends Component<Props> {
   }
 
   private goThroughPolygons() {
-    console.log(this.state.location.coords)
     polygons.forEach(polygon => {
       const location = {
         coords: {
@@ -150,8 +149,6 @@ export default class ZoneMap extends Component<Props> {
     // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
     
     var x = point.latitude, y = point.longitude;
-    console.log(x);
-    console.log(y);
     var inside = false;
     for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
         var xi = polygon[i].latitude, yi = polygon[i].longitude;
