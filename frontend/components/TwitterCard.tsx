@@ -16,13 +16,13 @@ export default function TwitterCard(props: {
         />
         <View>
           <View style={styles.cardHeader}>
-            <Text>{props.name}</Text>
-            <Text>@{props.username}</Text>
-            <Text>{props.time}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.name}>{props.name}</Text>
+              <Text style={styles.muted}>@{props.username}</Text>
+            </View>
+            <Text style={styles.muted}>{props.time}</Text>
           </View>
-          <View>
-            <Text>{props.body}</Text>
-          </View>
+          <Text style={styles.body}>{props.body}</Text>
         </View>
       </View>
     </View>
@@ -31,23 +31,33 @@ export default function TwitterCard(props: {
 
 const styles = StyleSheet.create({
   container: {
+    borderBottomColor: "#CDCDCD",
+    borderBottomWidth: 1,
     padding: 20,
   },
   cardContainer: {
-    borderRadius: 6,
-    elevation: 5,
-    padding: 20,
-    width: "90%",
     flexDirection: "row",
   },
   cardHeader: {
     flexDirection: "row",
-    flexGrow: 1,
     justifyContent: "space-between",
   },
   imgHeader: {
     width: 50,
     height: 50,
     marginRight: 5,
+  },
+  muted: {
+    fontSize: 12,
+    color: "#6B6B6B",
+  },
+
+  body: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: 250,
+  },
+  name: {
+    fontWeight: "700",
   },
 });
