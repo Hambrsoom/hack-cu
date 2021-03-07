@@ -1,12 +1,14 @@
 import React, {Component} from "react";
-import MapView, {Marker} from 'react-native-maps';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import MapView, {WeightedLatLng, Heatmap as HeatmapRN} from 'react-native-maps';
+import {StyleSheet, View} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-import {LocationObject, LocationOptions} from "expo-location";
+import {LocationObject} from "expo-location";
 import axios from "axios";
 import {generateUUID} from "../App";
 import * as SecureStore from 'expo-secure-store';
+import { PROVIDER_GOOGLE } from "react-native-maps";
+import Points from "./heatMapPointsV2.json"
 
 interface Props {
 	navigation: any;
@@ -20,10 +22,15 @@ class Heatmap extends Component<Props> {
 		region: undefined,
 		errorMessage: '',
 		showMap: false,
+		heatMapPoints: []
 	};
 
 	async componentDidMount() {
 		await this._getLocation();
+
+		this.setState({
+			heatMapPoints: this.getHeapMapPoints()
+		})
 	}
 
 	_getLocation = async () => {
@@ -38,6 +45,20 @@ class Heatmap extends Component<Props> {
 		})
 
 		await Location.watchPositionAsync({}, this.onLocationChanged);
+	}
+
+	getHeapMapPoints(): WeightedLatLng[] {
+		let point: WeightedLatLng = {latitude: 25.0, longitude: 35.0}
+
+		fetch("heatMapPointsV2.json").then(r => console.log(r.json()));
+
+		let points: WeightedLatLng[] = Points.points;
+
+		Object.keys(Points.points).map((value, i) => ())
+
+		JSON.parse(Points.points)
+
+		return [point]
 	}
 
 	onLocationChanged = async (location: LocationObject) => {
@@ -86,14 +107,17 @@ class Heatmap extends Component<Props> {
 			)
 		}
 
-
-
 	showMap(show: any) {
 		if (show) {
 			return <MapView
+				provider={PROVIDER_GOOGLE}
 				style={styles.map}
 				showsUserLocation={true}
 				initialRegion={this.state.region}>
+				<HeatmapRN
+				points={this.state.heatMapPoints}
+				radius={50}
+				/>
 			</MapView>
 		}
 
