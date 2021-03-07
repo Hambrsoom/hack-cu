@@ -1,4 +1,4 @@
-import express,  { Application, Request, Response, NextFunction, request, response } from 'express';
+import express,  { Application, Request, Response } from 'express';
 import cors from "cors";
 import bodyParser from "body-parser";
 import helmet from "helmet";
@@ -18,6 +18,7 @@ const app: Application = express();
 const port = 5000;
 
 let phoneBook = new Map();
+let locationBook = new Map();
 
 app.use(cors());
 app.use(helmet());
@@ -33,6 +34,15 @@ app.post('/addPhoneNumber', (request:Request, response: Response) => {
     let {id, phoneNumber} = request.body;
     phoneBook.set(id,phoneNumber);
     console.log(phoneBook);
+    response.sendStatus(200);
+});
+
+app.post('/updateLocation/:id', (request:Request, response: Response) => {
+    let id = request.params.id;
+    let location = request.body;
+    locationBook.set(id, location);
+    console.log("(Location, Time): ", locationBook);
+    console.log(Date())
     response.sendStatus(200);
 });
 

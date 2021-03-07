@@ -4,8 +4,8 @@ import Heatmap from "./screens/Heatmap";
 import Newsfeed from "./screens/Newsfeed";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import PermissionPage from "./screens/PermissionPage/PermissionPage";
-import {View, StyleSheet} from "react-native";
 
+import * as SecureStore from 'expo-secure-store';
 const Drawer = createDrawerNavigator();
 
 const MyTheme = {
@@ -28,5 +28,9 @@ export default function App() {
 	);
 }
 
+export async function generateUUID(){
+	let generatedID = '1234'//TODO: Find a way to generate a uuid (i.e uuid.v1())
+	await SecureStore.setItemAsync('uuid', generatedID);
+}
 
 
