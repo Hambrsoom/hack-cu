@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MapView, { Heatmap, Polygon } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { locations } from "../Data/data";
+import { polygons } from "../Data/LocationDelimiters";
 
 interface Props {
   navigation: any;
@@ -23,43 +23,21 @@ export default class ZoneMap extends Component<Props> {
             longitudeDelta: 0.0421,
           }}
         >
-          {
-            locations.map(marker => (
-              <Polygon fillColor = {'#0067B3'} coordinates = {locations}/>
-
-              // <Circle center={{latitude: marker.latitude, longitude: marker.longitude}} radius= {550}
-              // fillColor = {'#A3BE80'} />
-            ))
-          }
-
-
-
-          {/* <Heatmap points={locations} /> */}
-
-          {/* {
-        locations.map(marker => (
-          <Marker
-          coordinate = {{latitude: marker.latitude,
-            longitude: marker.longitude}}
-          >
-          <CustomMarker item = {marker}/>
-          </Marker>
-        ))
-      } */}
-
+          {this.drawPolygons()}
         </MapView>
       </View>
     )
   }
 
-  // private drawPolygons(){
-  //   this.polygons.forEach((polygon) => {
-  //     <Polygon
-  //       coordinates = {polygon}
-  //       fillColor="Orange"
-  //     />
-  //   })
-  // }
+  private drawPolygons(){
+    return polygons.map((polygon, index) => (
+        <View key={index}>
+          <Polygon
+            coordinates={polygon.coordinates}
+          />
+        </View>
+        ))
+  }
 }
 
 
