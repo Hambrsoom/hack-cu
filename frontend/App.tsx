@@ -1,21 +1,11 @@
-<<<<<<< HEAD
-import React from "react";
-import {NavigationContainer, DefaultTheme} from "@react-navigation/native";
-import Heatmap from "./screens/Heatmap";
-import Zone from "./screens/ZoneMap";
-import Newsfeed from "./screens/Newsfeed";
-import PermissionPage from "./screens/PermissionPage/PermissionPage";
-import {createDrawerNavigator} from "@react-navigation/drawer";
-import {View, StyleSheet} from "react-native";
-=======
 import React, {Component} from 'react';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import Heatmap from './screens/Heatmap';
+import Zone from "./screens/ZoneMap";
 import Newsfeed from './screens/Newsfeed';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import PermissionPage from './screens/PermissionPage/PermissionPage';
 import * as SecureStore from 'expo-secure-store';
->>>>>>> de3a1edfc3044ebdf8d81e6c3c7be77f853c47b4
 
 const Drawer = createDrawerNavigator();
 
