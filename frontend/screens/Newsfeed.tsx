@@ -24,7 +24,7 @@ class Newsfeed extends Component<Props, any> {
 
   async fetchData() {
     this.setState({ refreshing: true });
-    await fetch('http://localhost:5000/newsfeed')
+    await fetch('http://192.168.2.248:5000/newsfeed')
       .then((response) => response.json())
       .then((data) => {
         this.setState({ ...this.state, data });

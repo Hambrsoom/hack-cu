@@ -51,7 +51,7 @@ class Heatmap extends Component<Props> {
   };
 
   async getHeapMapPoints(): Promise<WeightedLatLng[]> {
-    let points: any = await axios.get('http://localhost:5000/heatPoints');
+    let points: any = await axios.get('http://192.168.2.248:5000/heatPoints');
 
     return points.data;
   }
@@ -97,7 +97,7 @@ class Heatmap extends Component<Props> {
       await generateUUID();
       id = await SecureStore.getItemAsync('uuid');
     }
-    await axios.post(`http://localhost:5000/updateLocation/${id}`, {
+    await axios.post(`http://192.168.2.248:5000/updateLocation/${id}`, {
       location: location,
     });
   }
@@ -125,7 +125,7 @@ class Heatmap extends Component<Props> {
         <CustomHeader
           navigation={this.props.navigation}
           header="Heatmap"
-        ></CustomHeader>
+        />
         <View style={styles.container}>{this.showMap(this.state.showMap)}</View>
       </View>
     );

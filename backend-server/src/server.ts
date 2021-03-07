@@ -47,7 +47,7 @@ app.get('/', (request: Request, response: Response) => {
 app.post('/addPhoneNumber', (request: Request, response: Response) => {
   let { id, phoneNumber } = request.body;
   phoneBook.set(id, phoneNumber);
-  console.log(phoneBook);
+  console.log(phoneBook)
   response.sendStatus(200);
 });
 
@@ -66,13 +66,20 @@ app.post('/updateLocation/:id', (request:Request, response: Response) => {
 });
 
 
-app.get('/sendMessage', async (request: Request, response: Response) => {
-  const message = await client.messages.create({
-    body: 'Hello from Node',
-    to: '+15148859244', // Text this number
-    from: '+16672398875', // From a valid Twilio number
-  });
-  response.sendStatus(200);
+app.get('/sendMessage/:id', (request: Request, response: Response) => {
+    console.log("Send message to id ", request.params.id)
+    let destinationNumber = phoneBook.get(request.params.id)
+    console.log("Destination:", destinationNumber)
+    client.messages
+        .create({
+            body: `Please be careful. You are entering a covid zone.`,
+            to: `+1${destinationNumber}`, // Text this number
+            from: '+16672398875', // From a valid Twilio number
+        })
+        .then(() => response.sendStatus(200))
+        .catch(reason => {
+            console.log(reason)
+        });
 });
 
 app.get('/newsfeed', async (request: Request, response: Response) => {
