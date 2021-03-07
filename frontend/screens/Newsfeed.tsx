@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { RefreshControl, SafeAreaView, ScrollView, View } from "react-native";
-import TwitterCard from "../components/TwitterCard";
+import React, { Component } from 'react';
+import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
+import TwitterCard from '../components/TwitterCard';
 
 interface Props {
   navigation: any;
@@ -24,7 +24,7 @@ class Newsfeed extends Component<Props, any> {
 
   fetchData() {
     this.setState({ refreshing: true });
-    fetch("http://10.0.0.215:5000/newsfeed")
+    fetch('http://localhost:5000/newsfeed')
       .then((response) => response.json())
       .then((data) => {
         this.setState({ ...this.state, data });
