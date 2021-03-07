@@ -18,13 +18,13 @@ class Newsfeed extends Component<Props, any> {
     await this.fetchData();
   }
 
-   _onRefresh = async () => {
+  _onRefresh = async () => {
     await this.fetchData();
   };
 
   async fetchData() {
     this.setState({ refreshing: true });
-    await fetch('http://192.168.0.38:5000/newsfeed')
+    await fetch('http://localhost:5000/newsfeed')
       .then((response) => response.json())
       .then((data) => {
         this.setState({ ...this.state, data });
@@ -35,15 +35,18 @@ class Newsfeed extends Component<Props, any> {
   render() {
     let cards: any = [];
     if (this.state.data) {
-      this.state.data.tweets.forEach((tweet: any) => {
+      this.state.data.tweets.forEach((tweet: any, index: number) => {
+        let date = this.timeSince(new Date(tweet.created_at));
         cards.push(
-          <TwitterCard
-            name={tweet.name}
-            screenName={tweet.screen_name}
-            time={tweet.created_at}
-            body={tweet.body}
-            img={tweet.image}
-          />
+          <View key={index}>
+            <TwitterCard
+              name={tweet.name}
+              screenName={tweet.screen_name}
+              time={date}
+              body={tweet.body}
+              img={tweet.image}
+            />
+          </View>
         );
       });
 
@@ -63,6 +66,21 @@ class Newsfeed extends Component<Props, any> {
       );
     }
     return <View></View>;
+  }
+
+  timeSince(timeStamp: Date): string {
+    var now = new Date(),
+      secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+    if (secondsPast < 60) {
+      return Math.round(secondsPast) + 's ago';
+    }
+    if (secondsPast < 3600) {
+      return secondsPast + 'm';
+    }
+    if (secondsPast <= 86400) {
+      return secondsPast + 'h';
+    }
+    return secondsPast + 's';
   }
 }
 
