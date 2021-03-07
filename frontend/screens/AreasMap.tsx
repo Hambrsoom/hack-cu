@@ -9,8 +9,7 @@ interface Props {
 	navigation: any;
 }
 
-
-class Heatmap extends Component<Props> {
+class AreasMap extends Component<Props> {
 	state = {
 		location: {coords: {latitude: 0, longitude: 0}},
 		region: undefined,
@@ -87,4 +86,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Heatmap;
+export default AreasMap;
