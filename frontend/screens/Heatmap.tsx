@@ -4,11 +4,15 @@ import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import {LocationObject, LocationOptions} from "expo-location";
+import axios from "axios";
+import {generateUUID} from "../App";
+import * as SecureStore from 'expo-secure-store';
 
 interface Props {
 	navigation: any;
 }
 
+const FIVE_MINUTES_IN_MS = 1000*60*5;
 
 class Heatmap extends Component<Props> {
 	state = {
@@ -19,7 +23,6 @@ class Heatmap extends Component<Props> {
 	};
 
 	async componentDidMount() {
-		console.log("component will mount")
 		await this._getLocation();
 	}
 
@@ -34,15 +37,29 @@ class Heatmap extends Component<Props> {
 			errorMessage: 'Permission Not Granted'
 		})
 
-		Location.watchPositionAsync({}, this.onLocationChanged);
+		await Location.watchPositionAsync({}, this.onLocationChanged);
 	}
 
-	onLocationChanged = (location: LocationObject) => {
+	onLocationChanged = async (location: LocationObject) => {
 		let region = {
 			latitude: location.coords.latitude,
 			longitude: location.coords.longitude,
 			latitudeDelta: 0.1,
 			longitudeDelta: 0.05,
+		}
+
+		// Check if location needs to be persisted again
+		let currentTime: Date = new Date();
+		let lastLocationUpdate = await SecureStore.getItemAsync('lastUpdated');
+
+		if (lastLocationUpdate) {
+			let lastPersistedTime = new Date(lastLocationUpdate);
+			let locationNeedsToBePersistedAgain: boolean = (currentTime.getTime() - lastPersistedTime.getTime()) < FIVE_MINUTES_IN_MS;
+			if (locationNeedsToBePersistedAgain) {
+				await this.persistCurrentLocation(location, currentTime)
+			}
+		}else {
+			await this.persistCurrentLocation(location, currentTime)
 		}
 
 		this.setState({
@@ -51,6 +68,25 @@ class Heatmap extends Component<Props> {
 			showMap: true
 		})
 	}
+
+	// Persist the current location so that it can be used in the heatmap
+	async persistCurrentLocation(location: LocationObject, currentTime: Date) {
+		let id = await SecureStore.getItemAsync('uuid');
+
+		await SecureStore.setItemAsync('lastUpdated', currentTime.toUTCString());
+
+		if(!id){
+			await generateUUID();
+			id = await SecureStore.getItemAsync('uuid');
+		}
+			await axios.post(`http://192.168.0.38:5000/updateLocation/${id}`,
+				{
+					location: location
+				}
+			)
+		}
+
+
 
 	showMap(show: any) {
 		if (show) {
@@ -61,7 +97,7 @@ class Heatmap extends Component<Props> {
 			</MapView>
 		}
 
-		return <View></View>
+		return <View />
 	}
 
 	render() {

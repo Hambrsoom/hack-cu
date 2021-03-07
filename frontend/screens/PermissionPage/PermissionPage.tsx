@@ -2,27 +2,30 @@ import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native"
 import React, {Component} from "react";
 import {Icon} from 'react-native-elements'
 import axios from "axios";
+import {generateUUID} from "../../App";
+import * as SecureStore from "expo-secure-store";
 
 interface Props {
 	navigation: any;
 }
 export default class PermissionPage extends Component<Props> {
-	state = {showPrompt: false, telephoneNumber:null, showPermissionPage: true};
+	state = {showPrompt: false, telephoneNumber:undefined, showPermissionPage: true};
 
 	async onSave(){
-		let response = await axios.post("http://192.168.2.248:5000/" + "addPhoneNumber",
-			{
-				id: 0,
-				phoneNumber: this.state.telephoneNumber
-			}
-		);
-
-		if(response.status == 200){
-			this.props.navigation.navigate("Heatmap")
-		}
+		await generateUUID();
+		let id = await SecureStore.getItemAsync('uuid');
+		axios
+			.post("http://192.168.0.38:5000/addPhoneNumber",
+				{
+					id: id,
+					phoneNumber: this.state.telephoneNumber
+				}
+			)
+			.then(() => this.props.navigation.navigate("Heatmap"))
+			.catch(reason => console.log("Cannot add number:", reason))
 	}
 
-	render() {
+	 render() {
 		return (
 			<View style={styles.container}>
 				<Icon
@@ -71,7 +74,6 @@ export default class PermissionPage extends Component<Props> {
 			/>
 			<TouchableOpacity
 				onPress={() => this.onSave()}
-				disabled={!this.state.telephoneNumber}
 				style={styles.primaryButton}>
 				<Text style={styles.primaryButtonText}>SAVE</Text>
 			</TouchableOpacity>

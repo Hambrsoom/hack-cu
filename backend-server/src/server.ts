@@ -27,6 +27,7 @@ const app: Application = express();
 const port = 5000;
 
 let phoneBook = new Map();
+let locationBook = new Map();
 
 app.use(cors());
 app.use(helmet());
@@ -49,6 +50,16 @@ app.get('/phoneNumber/:id', (request: Request, response: Response) => {
   response.status(200).send(phoneBook.get(id));
 });
 
+app.post('/updateLocation/:id', (request:Request, response: Response) => {
+    let id = request.params.id;
+    let location = request.body;
+    locationBook.set(id, location);
+    console.log("(Location, Time): ", locationBook);
+    console.log(Date())
+    response.sendStatus(200);
+});
+
+
 app.get('/sendMessage', async (request: Request, response: Response) => {
   const message = await client.messages.create({
     body: 'Hello from Node',
@@ -57,7 +68,6 @@ app.get('/sendMessage', async (request: Request, response: Response) => {
   });
   response.sendStatus(200);
 });
-
 
 app.get('/newsfeed', async (request: Request, response: Response) => {
   var options = {
