@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import TwitterCard from '../components/TwitterCard';
-
+import CustomHeader from '../components/Header';
 interface Props {
   navigation: any;
 }
@@ -51,18 +51,24 @@ class Newsfeed extends Component<Props, any> {
       });
 
       return (
-        <SafeAreaView>
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }
-          >
-            {cards}
-          </ScrollView>
-        </SafeAreaView>
+        <View>
+          <CustomHeader
+            navigation={this.props.navigation}
+            header="Newsfeed"
+          ></CustomHeader>
+          <SafeAreaView>
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh}
+                />
+              }
+            >
+              {cards}
+            </ScrollView>
+          </SafeAreaView>
+        </View>
       );
     }
     return <View></View>;
