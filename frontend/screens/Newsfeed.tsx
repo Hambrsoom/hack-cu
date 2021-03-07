@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, Button } from "react-native";
+import { Location, Permissions } from "expo";
 
 interface Props {
   navigation: any;
