@@ -9,7 +9,7 @@ class Heatmap extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        {/* <MapView style={styles.map} /> */}
+        <MapView style={styles.map} />
       </View>
     );
   }
