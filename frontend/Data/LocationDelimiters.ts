@@ -2,6 +2,7 @@ export const polygons =
 [
         //01 - Bas-Saint-Laurent 
         {
+                title: "01 - Bas-Saint-Laurent", 
                 coordinates: [
                         {
                                 latitude: 48.27730685936291,
@@ -24,6 +25,7 @@ export const polygons =
         },
         //02 - Saguenay - Lac-Saint-Jean
         {
+                title: "02 - Saguenay - Lac-Saint-Jean", 
                 coordinates: [
                         {
                                 latitude: 48.48845879455726,
@@ -45,6 +47,7 @@ export const polygons =
         },
         //03 - Capitale-Nationale
         {
+                title: "03 - Capitale-Nationale", 
                 coordinates: [
                         {
                                 latitude: 46.861654413238696,
@@ -67,6 +70,7 @@ export const polygons =
 
         // 04 - Mauricie et Centre-du-Québec
         {
+                title: "04 - Mauricie et Centre-du-Québec", 
                 coordinates: [
                         {
                                 latitude: 46.89079369604693,
@@ -88,6 +92,7 @@ export const polygons =
         },
         // 05 - Estrie
         {
+                title: "05 - Estrie", 
                 coordinates: [
                         {
                                 latitude: 45.78387724975371,
@@ -109,6 +114,7 @@ export const polygons =
         },
         // 06 - Montréal
         {
+                title: "06 - Montréal", 
                 coordinates: [
                         {
                                 latitude: 45.69761873694582,
@@ -134,6 +140,7 @@ export const polygons =
         },
         // 07 - Outaouais
         {
+                title: "07 - Outaouais", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -143,6 +150,7 @@ export const polygons =
         },
         // 08 - Abitibi-Témiscamingue
         {
+                title: "08 - Abitibi-Témiscamingue", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -152,6 +160,7 @@ export const polygons =
         },
         // 09 - Côte-Nord
         {
+                title: "09 - Côte-Nord", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -161,6 +170,7 @@ export const polygons =
         },
         // 10 - Nord-du-Québec
         {
+                title: "10 - Nord-du-Québec", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -170,6 +180,7 @@ export const polygons =
         },
         // 11 - Gaspésie - Îles-de-la-Madeleine
         {
+                title: "11 - Gaspésie - Îles-de-la-Madeleine", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -179,6 +190,7 @@ export const polygons =
         },
         // 12 - Chaudière-Appalaches
         {
+                title: "12 - Chaudière-Appalaches", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -188,6 +200,7 @@ export const polygons =
         },
         // 13 - Laval
         {
+                title: "13 - Laval", 
                 coordinates: [
                         {
                                 latitude: 45.73022094889046,
@@ -209,6 +222,7 @@ export const polygons =
         },
         // 14 - Lanaudière
         {
+                title: "14 - Lanaudière", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -218,6 +232,7 @@ export const polygons =
         },
         // 15 - Laurentides
         {
+                title: "15 - Laurentides", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -227,6 +242,7 @@ export const polygons =
         },
         // 16 - Montérégie
         {
+                title: "16 - Montérégie", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -236,6 +252,7 @@ export const polygons =
         },
         // 17 - Nunavik
         {
+                title: "17 - Nunavik", 
                 coordinates: [
                         {
                                 latitude: 0,
@@ -245,6 +262,7 @@ export const polygons =
         },
         // 18 - Terres-Cries-de-la-Baie-James
         {
+                title: "18 - Terres-Cries-de-la-Baie-James", 
                 coordinates: [
                         {
                                 latitude: 0,
