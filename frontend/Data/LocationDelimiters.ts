@@ -117,20 +117,20 @@ export const polygons =
                 title: "06 - Montréal", 
                 coordinates: [
                         {
-                                latitude: 45.69761873694582,
-                                longitude: -73.54733967265625
+                                latitude: 45.718035784484826,
+                                longitude: -73.5136267987297
                         },
                         {
-                                latitude:45.62851597363106,
-                                longitude: -73.4402229734375
+                                latitude:45.60427993067947,
+                                longitude: -73.34121737064002
                         },
                         {
-                                latitude: 45.424551383459566,
-                                longitude: -73.8796760984375
+                                latitude: 45.33032281374113,
+                                longitude: -73.75234754531544
                         },
                         {
-                                latitude: 45.44382492012453,
-                                longitude: -73.95383381328125
+                                latitude: 45.41671217656605,
+                                longitude: -73.97057206618419
                         }
                 ],
         },

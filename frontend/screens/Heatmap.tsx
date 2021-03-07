@@ -125,7 +125,7 @@ class Heatmap extends Component<Props> {
         <CustomHeader
           navigation={this.props.navigation}
           header="Heatmap"
-        ></CustomHeader>
+        />
         <View style={styles.container}>{this.showMap(this.state.showMap)}</View>
       </View>
     );

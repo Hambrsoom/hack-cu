@@ -91,7 +91,6 @@ export default class ZoneMap extends Component<Props> {
 					coordinates={polygon.coordinates}
 					strokeColor={'rgba(255,0,0,0.0)'}
 					fillColor={this.colorPicker(polygon.title)}
-					geodesic={true}
 				/>
 			</View>
 		));
