@@ -14,6 +14,7 @@ import axios from "axios";
 import { calculateActiveCases } from "./calculate";
 import { IArea } from "./area";
 
+import { points } from "./heatMapPoints";
 
 dotenv.config();
 
@@ -137,3 +138,8 @@ app.get('/locations', async(request:Request, response:Response) => {
 
 
 app.listen(port, ()=> console.log("Server running on port "));
+app.get('/heatPoints', (request: Request, response: Response) => {
+  response.status(200).send(points);
+});
+
+app.listen(port, () => console.log('Server running on port '));

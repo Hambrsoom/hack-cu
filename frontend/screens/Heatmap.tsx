@@ -1,12 +1,14 @@
 import React, {Component} from "react";
-import MapView, {Marker} from 'react-native-maps';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import MapView, {WeightedLatLng, Heatmap as HeatmapRN} from 'react-native-maps';
+import {StyleSheet, View} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-import {LocationObject, LocationOptions} from "expo-location";
+import {LocationObject} from "expo-location";
 import axios from "axios";
-import {generateUUID} from "../App";
+import {generateUUID} from "../utilities/unique-id";
 import * as SecureStore from 'expo-secure-store';
+import { PROVIDER_GOOGLE } from "react-native-maps";
+
 
 interface Props {
 	navigation: any;
@@ -20,10 +22,15 @@ class Heatmap extends Component<Props> {
 		region: undefined,
 		errorMessage: '',
 		showMap: false,
+		heatMapPoints: []
 	};
 
 	async componentDidMount() {
 		await this._getLocation();
+
+		this.setState({
+			heatMapPoints: await this.getHeapMapPoints()
+		})
 	}
 
 	_getLocation = async () => {
@@ -38,6 +45,12 @@ class Heatmap extends Component<Props> {
 		})
 
 		await Location.watchPositionAsync({}, this.onLocationChanged);
+	}
+
+	async getHeapMapPoints(): Promise<WeightedLatLng[]> {
+		let points:any = await axios.get("http://192.168.2.248:5000/heatPoints");
+
+		return points.data;
 	}
 
 	onLocationChanged = async (location: LocationObject) => {
@@ -86,14 +99,17 @@ class Heatmap extends Component<Props> {
 			)
 		}
 
-
-
 	showMap(show: any) {
 		if (show) {
 			return <MapView
+				provider={PROVIDER_GOOGLE}
 				style={styles.map}
 				showsUserLocation={true}
 				initialRegion={this.state.region}>
+				<HeatmapRN
+				points={this.state.heatMapPoints}
+				radius={50}
+				/>
 			</MapView>
 		}
 

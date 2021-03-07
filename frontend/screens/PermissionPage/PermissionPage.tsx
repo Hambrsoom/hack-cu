@@ -2,7 +2,7 @@ import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native"
 import React, {Component} from "react";
 import {Icon} from 'react-native-elements'
 import axios from "axios";
-import {generateUUID} from "../../App";
+import {generateUUID} from "../../utilities/unique-id";
 import * as SecureStore from "expo-secure-store";
 
 interface Props {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#778DFF",
 		shadowColor: "#000000",
 		borderRadius: 3,
-		width: "50%",
+		width: 150,
 
 		shadowOffset: {
 			width: 0,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#E1E1E1",
 		shadowColor: "#000000",
 		borderRadius: 3,
-		width: "50%",
+		width: 150,
 		alignSelf: 'center',
 
 		shadowOffset: {
