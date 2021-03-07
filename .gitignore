@@ -108,3 +108,4 @@ dist
 .expo/
 .idea/
 .npmignore
+frontend/package-lock.json
