@@ -10,7 +10,7 @@ export default class PermissionPage extends Component<Props> {
 	state = {showPrompt: false, telephoneNumber:null, showPermissionPage: true};
 
 	async onSave(){
-		let response = await axios.post("http://localhost:5000/" + "addPhoneNumber",
+		let response = await axios.post("http://192.168.2.248:5000/" + "addPhoneNumber",
 			{
 				id: 0,
 				phoneNumber: this.state.telephoneNumber
