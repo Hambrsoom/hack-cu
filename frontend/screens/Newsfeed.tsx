@@ -14,17 +14,17 @@ class Newsfeed extends Component<Props, any> {
     };
   }
 
-  componentDidMount() {
-    this.fetchData();
+  async componentDidMount() {
+    await this.fetchData();
   }
 
-  _onRefresh = () => {
-    this.fetchData();
+   _onRefresh = async () => {
+    await this.fetchData();
   };
 
-  fetchData() {
+  async fetchData() {
     this.setState({ refreshing: true });
-    fetch('http://192.168.2.248:5000/newsfeed')
+    await fetch('http://192.168.0.38:5000/newsfeed')
       .then((response) => response.json())
       .then((data) => {
         this.setState({ ...this.state, data });
@@ -43,7 +43,7 @@ class Newsfeed extends Component<Props, any> {
             time={tweet.created_at}
             body={tweet.body}
             img={tweet.image}
-          ></TwitterCard>
+          />
         );
       });
 
