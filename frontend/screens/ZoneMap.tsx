@@ -8,8 +8,6 @@ import axios from "axios";
 interface Props {
   navigation: any;
 }
-const { width, height } = Dimensions.get('window');
-
 
 
 export default class ZoneMap extends Component<Props> {
@@ -18,11 +16,9 @@ export default class ZoneMap extends Component<Props> {
 	};
 
   async componentDidMount() {
-    console.log("hello croissant")
-		let areaTableResponse = await axios.get(`http://192.168.50.146:5000/locations`);
+		let areaTableResponse = await axios.get(`http://192.168.2.248:5000/locations`);
     const ActiveCaseNumbers = areaTableResponse.data;
     this.setState({activeCases: ActiveCaseNumbers})
-    console.log(areaTableResponse)
 	}
 
   
@@ -58,25 +54,23 @@ export default class ZoneMap extends Component<Props> {
   }
 
   private colorPicker(municipalityString: string){
-    console.log(this.state.activeCases)
     let result: any;
     //Query for the active case # in the region that matches the passed string
     result = this.state.activeCases.find((record) => record["category"] == municipalityString)
     //Pick a color based on that number
-    if( result?.numberOfActiveCases && result?.numberOfActiveCases > 1000){
+    if(result?.numberOfActiveCases && result?.numberOfActiveCases > 1000){
       return "#FF0000"
     }
 
-    else if( result?.numberOfActiveCases && result?.numberOfActiveCases > 500){
+    else if(result?.numberOfActiveCases && result?.numberOfActiveCases > 500){
       return "#FF8C00"
     }
 
-    else{
+    else {
       return "#00FF00"
     }
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {

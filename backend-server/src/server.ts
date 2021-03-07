@@ -132,7 +132,7 @@ app.get('/locations', async(request:Request, response:Response) => {
         }
     });
     
-    response.sendStatus(200);
+    response.status(200).send(listOfAreas);
 })
 
 
