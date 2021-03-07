@@ -10,6 +10,10 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
+import axios from "axios";
+import { calculateActiveCases } from "./calculate";
+import { IArea } from "./area";
+
 import { points } from "./heatMapPoints";
 
 dotenv.config();
@@ -112,6 +116,28 @@ app.get('/newsfeed', async (request: Request, response: Response) => {
   req.end();
 });
 
+app.get('/locations', async(request:Request, response:Response) => {
+    let listOfAreas: IArea[] = [];
+    const apiLink = "https://www.donneesquebec.ca/recherche/api/3/action/datastore_search?resource_id=31b42799-cf70-4c29-832a-37ce2d4ddd0c";
+    let sentResponse = await axios.get(apiLink);
+    const records = sentResponse.data.result.records;
+
+    records.forEach((record: { [x: string]: any; }) => {
+        if (record["Categorie"].match(/\d{2}\s-\s/)){
+            const numberOfActiveCases = calculateActiveCases(record["Nb_Cas_Cumulatif"], record["Nb_Retablis_Cumulatif"], record["Nb_Deces_Cumulatif_Total"]);
+            let area: IArea = {
+                category: record["Categorie"],
+                numberOfActiveCases: numberOfActiveCases
+            }
+            listOfAreas.push(area);
+        }
+    });
+    
+    response.status(200).send(listOfAreas);
+})
+
+
+app.listen(port, ()=> console.log("Server running on port "));
 app.get('/heatPoints', (request: Request, response: Response) => {
   response.status(200).send(points);
 });
