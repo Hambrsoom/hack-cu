@@ -26,6 +26,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "@types/cors": "^2.8.10",
     "@types/twilio": "^2.11.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

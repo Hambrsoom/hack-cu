@@ -1,12 +1,26 @@
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {Component} from "react";
 import {Icon} from 'react-native-elements'
+import axios from "axios";
 
 interface Props {
 	navigation: any;
 }
 export default class PermissionPage extends Component<Props> {
 	state = {showPrompt: false, telephoneNumber:null, showPermissionPage: true};
+
+	async onSave(){
+		let response = await axios.post("http://localhost:5000/" + "addPhoneNumber",
+			{
+				id: 0,
+				phoneNumber: this.state.telephoneNumber
+			}
+		);
+
+		if(response.status == 200){
+			this.props.navigation.navigate("Heatmap")
+		}
+	}
 
 	render() {
 		return (
@@ -29,9 +43,8 @@ export default class PermissionPage extends Component<Props> {
 		}
 	}
 
-
 	private getPermissionView() {
-		return <>
+		return <View>
 			<Text style={styles.text}>Would you like to get notified whenever you approach a crowded
 				location?</Text>
 			<TouchableOpacity
@@ -41,23 +54,24 @@ export default class PermissionPage extends Component<Props> {
 			</TouchableOpacity>
 
 			<TouchableOpacity
-				onPress={() => this.props.navigation.navigate("HeatMap")}>
+				onPress={() => this.props.navigation.navigate("Heatmap")}>
 				<Text style={styles.secondaryButtonText}>Skip</Text>
 			</TouchableOpacity>
-		</>;
+		</View>;
 	}
 
-	getTelephoneNumberPrompt() {
-		return <>
+	private getTelephoneNumberPrompt() {
+		return <View>
 			<Text style={styles.text}>Enter your phone number to get notified</Text>
 			<TextInput
 				style={styles.textInput}
-				onChangeText={text => console.log(text)}
+				onChangeText={input => this.setState({telephoneNumber: input})}
 				autoCompleteType={"tel"}
 				keyboardType={"phone-pad"}
 			/>
 			<TouchableOpacity
-				onPress={() => alert('Hello, world!')}
+				onPress={() => this.onSave()}
+				disabled={!this.state.telephoneNumber}
 				style={styles.primaryButton}>
 				<Text style={styles.primaryButtonText}>SAVE</Text>
 			</TouchableOpacity>
@@ -65,7 +79,7 @@ export default class PermissionPage extends Component<Props> {
 				onPress={() => this.setState({showPrompt: false})}>
 				<Text style={styles.secondaryButtonText}>Cancel</Text>
 			</TouchableOpacity>
-		</>;
+		</View>;
 	}
 }
 
@@ -81,13 +95,15 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		textAlign: 'center',
-		fontSize: 24
+		fontSize: 24,
 	},
 	primaryButton: {
+		alignSelf: "center",
 		marginBottom: 8,
 		marginTop: 8,
 		paddingBottom: 8,
 		paddingTop: 8,
+
 		backgroundColor: "#778DFF",
 		shadowColor: "#000000",
 		borderRadius: 3,
@@ -111,6 +127,7 @@ const styles = StyleSheet.create({
 		shadowColor: "#000000",
 		borderRadius: 3,
 		width: "50%",
+		alignSelf: 'center',
 
 		shadowOffset: {
 			width: 0,

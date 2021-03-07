@@ -16,31 +16,15 @@ const MyTheme = {
 	},
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
-
 export default function App() {
-	function getHomePage() {
-		return <NavigationContainer theme={MyTheme}>
+	return (
+		<NavigationContainer theme={MyTheme}>
 			<Drawer.Navigator initialRouteName="Permission">
 				<Drawer.Screen name="Permission" component={PermissionPage}/>
 				<Drawer.Screen name="Heatmap" component={Heatmap}/>
 				<Drawer.Screen name="Newsfeed" component={Newsfeed}/>
 			</Drawer.Navigator>
-		</NavigationContainer>;
-	}
-
-	return (
-		<View style={styles.container}>
-			{/*<PermissionPage/>*/}
-			{getHomePage()}
-		</View>
+		</NavigationContainer>
 	);
 }
 
